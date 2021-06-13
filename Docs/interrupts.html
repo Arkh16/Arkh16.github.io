@@ -1,0 +1,80 @@
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            margin-left: 16px;
+            margin-top: 16px;
+        }
+
+        code, pre {
+            border-radius: 2px;
+            padding: 1px 4px;
+            background-color: #f8f9fa;
+            color: #000;
+            border: 1px solid #eaecf0;
+        }
+
+        .align {
+            vertical-align: middle !important;
+            
+        }
+
+        p {
+            width: 80%;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Interrupts/IDT</h2>
+    <p>
+    In total, there are 32 interrupts (<code>$20</code>). All interrupt function is user-defined via the IDT (interrupt descriptor table), and they are called by the system as in an exception/error. Somewhere in ROM <code>IDT</code> should be defined. Defining an IDT happens in two steps: 1.) Setting the IDT in ROM, & 2.) setting the IDT register to the address of the <code>RET</code> byte in the IDT. The IDT is 129 bytes long in all. The first byte is a <code>RET</code> opcode, the last 64 bytes are pointers to areas in ROM/memory where the processor should go to upon that interrupt being raised:
+    <br></p>
+
+    <pre>
+
+        <i><b>[Empty IDT example]</b></i>
+        
+        <i>OFFS</i>   <i>x0 x1 x2 x3 x4 x5 x6 x7 x9 x9 xA xB xC xD xE xF</i>
+        <b>$040x</b>  48 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$041x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$042x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$043x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$044x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$045x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$046x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$047x</b>  04 00 04 00 04 00 04 00 04 00 04 00 04 00 04 00
+        <b>$048x</b>  04
+    </pre>
+
+    <p>
+        The first byte, at <code>$0400</code>, is <code>$48</code>, which is the opcode <code>RET</code>, which returns from a call. The next two bytes (<code>$0401-$0402</code>) are <code>$0400</code> (data is stored in little-endian format), which is the very first byte of the IDT. This is simply so that if an interrupt is not defined, it won't reach into garbage data.<br><br>
+    </p>
+
+    <h2>Default interrupts</h2>
+    <p>
+        A list of default interrupts are as follows:
+    </p>
+
+    <table class="table table-striped table-light table-bordered" style="width: 60%">
+        <thead>
+            <tr>
+                <th scope="col" class="col-2">Hex number</th>
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-8">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row" class="align"><code>0x00</code></th>
+                <td class="align"><code>INVALID OPCODE</code></td>
+                <td>Raised by the processor when an invalid opcode is reached.</td>
+            </tr>
+            <tr>
+                <th scope="row" class="align"><code>0x01</code></th>
+                <td class="align"><code>ROM FAULT</code></td>
+                <td>Raised by the processor when <code>IC</code> points to RAM</td>
+            </tr>
+        </tbody>
+    </table>    
+</body>

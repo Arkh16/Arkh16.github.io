@@ -1,0 +1,95 @@
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            margin-left: 16px;
+            margin-top: 16px;
+        }
+
+        code, pre {
+            border-radius: 2px;
+            padding: 1px 4px;
+            background-color: #f8f9fa;
+            color: #000;
+            border: 1px solid #eaecf0;
+        }
+
+        .align {
+            vertical-align: middle !important;
+            
+        }
+
+        p {
+            width: 80%;
+        }
+
+    </style>
+</head>
+<body>
+    <pre>
+
+    Register Operations     00    inc  r*       Increment value of register
+                            10    dec  r*       Decrement value of register
+                            20    ldr  r* $16   Store value in register
+                            30    cpy  r* r*    Copy value between two registers
+                            40    get  r* $16   Put value in memory into register where address is immediate
+                            50    grt  r* r*    Put value in memory into register where address is register value
+                            60    add  r* $16   Adds immediate to register
+                            70    addr r* r*    Adds register to register
+                            80    sub  r* $16   Subtracts immediate from register
+                            90    subr r* r*    Subtracts register from register
+                            A0    not  r*       Inverts bits in register
+                            B0    and  r* $16   ANDs immediate to register
+                            B1    andr r* r*    ANDs register to register
+                            C0    or   r* $16   ORs immedate to register
+                            C1    orr  r* r*    ORs register to register
+                            D0    xor  r* $16   XORs immediate to register
+                            D1    xorr r* r*    XORs register to register
+
+    Memory Operations       01    set  $16 $16  Set byte in memory where value and address are immediates
+                            11    setr $16 r*   Set byte in memory where value is register and address is immediate
+                            21    srt  r* $16   Set byte in memory where value is immediate and address is register
+                            31    srtr $16 $16  Set byte in memory where value is register and address is register
+                            41    bank $16      Swap high-RAM bank
+
+    Stack Operations        02    push r*       Push value of register to the stack
+                            12    pop  r*       Pop off stack into register
+                            22    rts  r*       Pop off stack into IC
+    
+    Prog Flow Instructions  33    call $16      Push IC+3 to stack and jumps to address
+                            43    jmp  $16      Jump to immedate
+                            53    cmp  r* $16   Compare register to immedate and set flags
+                            63    cmr  r* r*    Compare register to register and set flags
+                            73    je   $16      Jump if EQ flag set
+                            74    jne  $16      Jump if EQ flag unset
+                            83    jl   $16      Jump if LT flag set
+                            84    jle  $16      Jump if LT flag set or EQ flag set
+                            93    jg   $16      Jump is GT flag set
+                            94    jge  $16      Jump if GT flag set or EQ flag set
+                            A3    jz   $16      Jump if QZ flag set
+                            A4    jnz  $16      Jump if QZ flag unset
+
+    CPU instructions        55    int  $8       Raise interrupt
+    </pre>
+
+    <pre>
+
+           x0   x1   x2   x3   x4   x5   x6   x7   x8   x9   xA   xB   xC   xD   xE   xF   
+       0x  inc  set  push 
+       1x  dec  setr pop  
+       2x  ldr  srt  rts  
+       3x  cpy  srtr      call 
+       4x  get  bank      jmp
+       5x  grt            cmp       int
+       6x  add            cmr
+       7x  addr           je   jne
+       8x  sub            jl   jle
+       9x  subr           jg   jge
+       Ax  not            
+       Bx  and  andr      
+       Cx  or   orr       
+       Dx  xor  xorr      
+       Ex  
+       Fx  
+    </pre>
+</body>

@@ -1,0 +1,66 @@
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            margin-left: 16px;
+            margin-top: 16px;
+        }
+
+        code, pre {
+            border-radius: 2px;
+            padding: 1px 4px;
+            background-color: #f8f9fa;
+            color: #000;
+            border: 1px solid #eaecf0;
+        }
+
+        .align {
+            vertical-align: middle !important;
+            
+        }
+
+        p {
+            width: 80%;
+        }
+
+        .green {
+            color: #0ead0e;
+        }
+
+        .pastelorange {
+            color: #f29f3f;
+        }
+
+        .pastelred {
+            color: #f85151;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>What is the Map?</h2>
+    <p>Since only 64kb of ROM & memory can be indexed at once, a map needs to be defined to show what addresses go to what space.</p>
+    <pre>
+
+        0xF000    <span class="pastelred bold">################################</span>
+        0xE000    <span class="pastelred bold">########## BANKED RAM ##########</span>     With 256 banks of 16k, there is a total of 4MB
+        0xD000    <span class="pastelred bold">##########   (16kb)   ##########</span>     of total accessable memory in the 16 bit address space
+        0xC000    <span class="pastelred bold">################################</span>
+        0xB000               [reserved]
+        0xA000    <span class="pastelorange bold">#### VIDEOMEMORY & settings ####</span>    (3,840 bytes VIDEOMEMORY & 256 bytes flags/settings)
+        0x9000    <span class="green bold">################################</span>
+        0x8000    <span class="green bold">################################</span>
+        0x7000    <span class="green bold">################################</span>
+        0x6000    <span class="green bold">##########            ##########</span>
+        0x5000    <span class="green bold">##########  ROM DATA  ##########</span>
+        0x4000    <span class="green bold">##########   (40kb)   ##########</span>
+        0x3000    <span class="green bold">##########            ##########</span>
+        0x2000    <span class="green bold">################################</span>
+        0x1000    <span class="green bold">################################</span>
+        0x0000    <span class="green bold">################################</span>
+    </pre>
+    <p><code>$0000</code> to <code>$9FFF</code> is the program ROM. This has the source code/sprite info for the entire program. <code>$A000</code> to <code>$AF00</code> holds Video Memory, which stores text/sprite information. <code>$AF00</code> to <code>$AFFF</code> contains settings or flags involving the videomem. <code>$C000</code> to <code>$FFFF</code> is the system RAM (memory). Memory can be swapped between 256 memory banks. Each contains 16k of memory. Thus, in the 16 bit (<code>65,536</code> byte) address space, you can index 4MB of memory and 48kb of ROM.</p>
+</body>
